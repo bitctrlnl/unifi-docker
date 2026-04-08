@@ -34,9 +34,9 @@ ENV BASEDIR=/usr/lib/unifi \
 # This should be integrated with the main run because it duplicates a lot of the steps there
 # but for now while shoehorning gosu in it is seperate
 RUN set -eux; \
-	apt-get update; \
-	apt-get install -y gosu; \
-	rm -rf /var/lib/apt/lists/*
+    apt-get update; \
+    apt-get install -y --no-install-recommends gosu ca-certificates procps; \
+    rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /usr/unifi \
      /usr/local/unifi/init.d \
@@ -63,8 +63,8 @@ RUN set -ex \
  && /usr/local/bin/docker-build.sh "${PKGURL}"
 
 COPY --from=permset /out/permset /usr/local/bin/permset
-RUN chown 0.0 /usr/local/bin/permset && \
-    chmod +s /usr/local/bin/permset
+RUN chown root:root /usr/local/bin/permset && \
+    chmod 4755 /usr/local/bin/permset
 
 RUN mkdir -p /unifi && chown unifi:unifi -R /unifi
 
@@ -73,7 +73,7 @@ COPY hotfixes /usr/local/unifi/hotfixes
 
 RUN chmod +x /usr/local/unifi/hotfixes/* && run-parts /usr/local/unifi/hotfixes
 
-VOLUME ["/unifi", "${RUNDIR}"]
+VOLUME ["/unifi", "/unifi/run"]
 
 EXPOSE 6789/tcp 8080/tcp 8443/tcp 8880/tcp 8843/tcp 3478/udp 10001/udp
 
