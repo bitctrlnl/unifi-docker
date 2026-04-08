@@ -8,10 +8,6 @@ if ! validate; then
   exit 1
 fi
 
-if [ -x /usr/local/bin/docker-build.sh ]; then
-    /usr/local/bin/docker-build.sh "${PKGURL}"
-fi
-
 exit_handler() {
     log "Exit signal received, shutting down"
     java -jar ${BASEDIR}/lib/ace.jar stop
