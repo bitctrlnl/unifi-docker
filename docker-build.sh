@@ -38,6 +38,7 @@ apt-get install -qy --no-install-recommends \
     gpg-agent \
     openjdk-25-jre-headless \
     procps \
+    unzip \
     libcap2-bin \
     tzdata
 echo 'deb https://www.ui.com/downloads/unifi/debian stable ubiquiti' | tee /etc/apt/sources.list.d/100-ubnt-unifi.list
@@ -46,10 +47,12 @@ tryfail apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 06E85760C0A
 if [ -d "/usr/local/docker/pre_build/$(dpkg --print-architecture)" ]; then
     find "/usr/local/docker/pre_build/$(dpkg --print-architecture)" -type f -exec '{}' \;
 fi
+UNIFI_ZIP_URL="${1%.deb}.zip"
 
-curl -L -o ./unifi.deb "${1}"
-apt -qy install ./unifi.deb
-rm -f ./unifi.deb
+curl -L -o /tmp/unifi.zip "${UNIFI_ZIP_URL}"
+unzip -q /tmp/unifi.zip -d /usr/lib
+mv /usr/lib/UniFi /usr/lib/unifi
+rm -f /tmp/unifi.zip
 chown -R unifi:unifi /usr/lib/unifi
 rm -rf /var/lib/apt/lists/*
 
