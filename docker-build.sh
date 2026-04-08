@@ -11,9 +11,11 @@ tryfail() {
 }
 
 if [ $# -lt 1 ] || [ -z "${1:-}" ]; then
-    echo "please pass PKGURL as argument"
+    echo "please pass UNIFI_ZIP_URL as argument"
     exit 1
 fi
+
+UNIFI_ZIP_URL="$1"
 
 apt-get update
 apt-get install -qy --no-install-recommends \
@@ -28,8 +30,6 @@ apt-get install -qy --no-install-recommends \
 if [ -d "/usr/local/docker/pre_build/$(dpkg --print-architecture)" ]; then
     find "/usr/local/docker/pre_build/$(dpkg --print-architecture)" -type f -exec '{}' \;
 fi
-
-UNIFI_ZIP_URL="${1%.deb}.zip"
 
 tryfail curl -fL -o /tmp/unifi.zip "${UNIFI_ZIP_URL}"
 
