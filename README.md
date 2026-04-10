@@ -171,16 +171,6 @@ This setup is suitable for:
 * Homelab environments
 * Advanced self-hosting
 * Small production deployments
-
----
-
-## Future improvements
-
-* Healthcheck tuning
-* Optional reverse proxy examples
-* Kubernetes deployment option
-* Automated builds (CI/CD)
-
 ---
 
 ## License
