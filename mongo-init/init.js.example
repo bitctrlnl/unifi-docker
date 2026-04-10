@@ -1,0 +1,11 @@
+db = db.getSiblingDB("unifi");
+
+db.createUser({
+  user: "unifi",
+  pwd: "changeme-app-password",
+  roles: [
+    { role: "readWrite", db: "unifi" },
+    { role: "readWrite", db: "unifi_stat" },
+    { role: "readWrite", db: "unifi_audit" }
+  ]
+});
