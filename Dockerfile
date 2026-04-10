@@ -78,5 +78,6 @@ WORKDIR /unifi
 
 HEALTHCHECK --start-period=5m CMD /usr/local/bin/docker-healthcheck.sh || exit 1
 
+USER unifi
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["unifi"]
