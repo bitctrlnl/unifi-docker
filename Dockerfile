@@ -23,8 +23,8 @@ ENV BASEDIR=/usr/lib/unifi \
     CERTNAME=cert.pem \
     CERT_PRIVATE_NAME=privkey.pem \
     CERT_IS_CHAIN=false \
-    BIND_PRIV=true \
-    RUNAS_UID0=true \
+    BIND_PRIV=false \
+    RUNAS_UID0=false \
     UNIFI_GID=999 \
     UNIFI_UID=999
 
