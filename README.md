@@ -129,7 +129,54 @@ docker compose down
 rm -rf mongo-data
 docker compose up -d
 ```
+Configuration
+Supported environment variables
 
+The container supports at least the following environment variables:
+
+DB_URI
+STATDB_URI
+DB_NAME
+JVM_MAX_HEAP_SIZE
+JVM_INIT_HEAP_SIZE
+JVM_MAX_THREAD_STACK_SIZE
+LOTSOFDEVICES
+UNIFI_HTTP_PORT
+UNIFI_HTTPS_PORT
+PORTAL_HTTP_PORT
+PORTAL_HTTPS_PORT
+SYSTEM_IP
+UNIFI_STDOUT
+Example for larger deployments
+
+Example UniFi service configuration for a larger environment:
+
+environment:
+  DB_URI: mongodb://${MONGO_APP_USERNAME}:${MONGO_APP_PASSWORD}@unifi-mongo:27017/unifi
+  STATDB_URI: mongodb://${MONGO_APP_USERNAME}:${MONGO_APP_PASSWORD}@unifi-mongo:27017/unifi_stat
+  DB_NAME: unifi
+  JVM_MAX_HEAP_SIZE: 4096M
+  JVM_INIT_HEAP_SIZE: 4096M
+  JVM_MAX_THREAD_STACK_SIZE: 1024K
+  LOTSOFDEVICES: "true"
+
+If you use larger JVM heap settings, make sure the container or host has enough memory available.
+
+MongoDB initialization
+
+A dedicated UniFi application user can be created through the MongoDB init script example.
+
+The example script creates a user with read/write access to:
+
+unifi
+unifi_stat
+unifi_audit
+
+Important:
+
+MongoDB init scripts only run when the MongoDB data directory is empty.
+
+If you change users or passwords later, you may need a fresh MongoDB data directory for a clean initialization test.
 ---
 
 ## Security notes
