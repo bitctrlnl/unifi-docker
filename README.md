@@ -173,6 +173,3 @@ This setup is suitable for:
 * Small production deployments
 ---
 
-## License
-
-MIT (or choose your preferred license)
