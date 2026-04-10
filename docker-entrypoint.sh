@@ -205,10 +205,6 @@ if [[ "${@}" == "unifi" ]]; then
                 exit 1
             fi
         fi
-        if [ "$(id unifi -u)" != "${UNIFI_UID}" ] || [ "$(id unifi -g)" != "${UNIFI_GID}" ]; then
-            log "INFO: Changing 'unifi' UID to '${UNIFI_UID}' and GID to '${UNIFI_GID}'"
-            usermod -o -u ${UNIFI_UID} unifi && groupmod -o -g ${UNIFI_GID} unifi
-        fi
         # Using a loop here so I can check more directories easily later
         for dir in ${DIRS}; do
             if [ "$(stat -c '%u' "${dir}")" != "${UNIFI_UID}" ]; then
