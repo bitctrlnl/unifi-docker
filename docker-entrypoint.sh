@@ -193,7 +193,7 @@ if [[ "${@}" == "unifi" ]]; then
         if [ "${CUID}" == 0 ]; then
             log 'WARNING: Running UniFi in insecure (root) mode'
         fi
-        ${UNIFI_CMD} &
+        exec ${UNIFI_CMD}
     elif [ "${RUNAS_UID0}" == "false" ]; then
         if [ "${BIND_PRIV}" == "true" ]; then
             if setcap 'cap_net_bind_service=+ep' "${JAVA_HOME}/bin/java"; then
@@ -205,10 +205,8 @@ if [[ "${@}" == "unifi" ]]; then
                 exit 1
             fi
         fi
-        gosu unifi:unifi ${UNIFI_CMD} &
+        exec gosu unifi:unifi ${UNIFI_CMD}
     fi
-    wait
-    log "WARN: unifi service process ended without being signaled? Check for errors in ${LOGDIR}." >&2
 else
     log "Executing: ${@}"
     exec ${@}
