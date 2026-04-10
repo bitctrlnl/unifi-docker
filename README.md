@@ -219,4 +219,18 @@ This setup is suitable for:
 * Advanced self-hosting
 * Small production deployments
 ---
+## Status
 
+Current status of the project:
+
+image build works
+external MongoDB works
+non-root execution works
+Docker Compose deployment works
+
+## Example files included
+.env.example
+docker-compose.example.yaml
+mongo-init/init.js.example
+
+These are examples only. Copy them and adjust them for your environment before deployment.
