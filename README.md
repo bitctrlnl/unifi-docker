@@ -85,10 +85,10 @@ https://<host>:8443
 ### Example for larger deployments
 
 environment:
-  JVM_MAX_HEAP_SIZE: 4096M
-  JVM_INIT_HEAP_SIZE: 4096M
-  JVM_MAX_THREAD_STACK_SIZE: 1024K
-  LOTSOFDEVICES: "true"
+  - JVM_MAX_HEAP_SIZE: 4096M
+  - JVM_INIT_HEAP_SIZE: 4096M
+  - JVM_MAX_THREAD_STACK_SIZE: 1024K
+  - LOTSOFDEVICES: "true"
 
 ## MongoDB initialization
 
