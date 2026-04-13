@@ -1,4 +1,3 @@
-# unifi-docker
 # UniFi Docker Image for External MongoDB
 
 Custom UniFi Network Application image based on the official UniFi `.zip` release.
