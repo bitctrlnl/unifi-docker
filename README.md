@@ -36,17 +36,17 @@ bitctrlnl/unifi:10.2.105.5
 ## Quick start
 
 ### 1. Clone the repository
-
+```
 git clone https://github.com/bitctrlnl/unifi-docker.git
 cd unifi-docker
-
+```
 ### 2. Copy example files
-
+```
 cp .env.example .env  
 cp docker-compose.example.yaml docker-compose.yaml  
 mkdir -p mongo-init  
 cp mongo-init/init.js.example mongo-init/init.js  
-
+```
 ### 3. Configure credentials
 
 Edit:
@@ -54,13 +54,13 @@ Edit:
 - `mongo-init/init.js`
 
 ### 4. Start the stack
-
+```
 docker compose up -d
-
+```
 ### 5. Open UniFi
-
+```
 https://<host>:8443
-
+```
 ## Persistent data
 
 - ./unifi-data:/unifi
@@ -83,13 +83,13 @@ https://<host>:8443
 - UNIFI_STDOUT
 
 ### Example for larger deployments
-
+```
 environment:
   - JVM_MAX_HEAP_SIZE: 4096M
   - JVM_INIT_HEAP_SIZE: 4096M
   - JVM_MAX_THREAD_STACK_SIZE: 1024K
   - LOTSOFDEVICES: "true"
-
+```
 ## MongoDB initialization
 
 Init scripts only run on a fresh database.
