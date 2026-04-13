@@ -1,8 +1,4 @@
 # unifi-docker
-Unifi Access Point controller based on jacobalberty/unifi
-
-Transformed into:
-
 # UniFi Docker Image for External MongoDB
 
 Custom UniFi Network Application image based on the official UniFi `.zip` release.
