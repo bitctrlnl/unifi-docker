@@ -161,7 +161,22 @@ MongoDB init scripts only run when the data directory is empty.
 * `mongo-init/init.js.example`
 
 ---
+## Versioning & Release Policy
 
+This image follows UniFi versioning with an additional patch level:
+
+- `10.2.105` → stable base version (recommended)
+- `10.2.105.x` → custom patched builds
+
+Example:
+- `10.2.105.5` = UniFi 10.2.105 with 5 internal fixes/improvements
+
+### Usage recommendation
+
+Always pin to a specific version:
+
+```yaml
+image: bitctrlnl/unifi:10.2.105
 ## License
 
 MIT
