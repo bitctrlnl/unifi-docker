@@ -1,9 +1,3 @@
-FROM golang:1.24.13-trixie AS permset
-WORKDIR /src
-RUN git clone https://github.com/jacobalberty/permset.git /src && \
-    mkdir -p /out && \
-    go build -ldflags "-X main.chownDir=/unifi" -o /out/permset
-
 FROM debian:trixie-slim
 
 LABEL maintainer="bitctrlnl"
@@ -30,7 +24,7 @@ ENV BASEDIR=/usr/lib/unifi \
 
 RUN set -eux; \
     apt-get update; \
-    apt-get install -y --no-install-recommends gosu ca-certificates procps; \
+    apt-get install -y --no-install-recommends ca-certificates procps; \
     rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /usr/unifi \
@@ -57,10 +51,6 @@ RUN set -ex \
  && groupadd -r unifi -g $UNIFI_GID \
  && useradd --no-log-init -r -u $UNIFI_UID -g $UNIFI_GID unifi \
  && /usr/local/bin/docker-build.sh "${UNIFI_ZIP_URL}"
-
-COPY --from=permset /out/permset /usr/local/bin/permset
-RUN chown root:root /usr/local/bin/permset \
- && chmod 4755 /usr/local/bin/permset
 
 RUN mkdir -p /unifi \
  && chown unifi:unifi -R /unifi

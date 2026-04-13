@@ -165,11 +165,6 @@ fi
 
 UNIFI_CMD="java ${JVM_OPTS} -jar ${BASEDIR}/lib/ace.jar start"
 
-if [ "$EUID" -ne 0 ] && command -v permset &> /dev/null
-then
-  permset
-fi
-
 # controller writes to relative path logs/server.log
 cd ${BASEDIR}
 
@@ -189,24 +184,7 @@ if [[ "${@}" == "unifi" ]]; then
     for key in "${!settings[@]}"; do
       confSet "$confFile" "$key" "${settings[$key]}"
     done
-    if [ "${RUNAS_UID0}" == "true" ] || [ "${CUID}" != "0" ]; then
-        if [ "${CUID}" == 0 ]; then
-            log 'WARNING: Running UniFi in insecure (root) mode'
-        fi
-        exec ${UNIFI_CMD}
-    elif [ "${RUNAS_UID0}" == "false" ]; then
-        if [ "${BIND_PRIV}" == "true" ]; then
-            if setcap 'cap_net_bind_service=+ep' "${JAVA_HOME}/bin/java"; then
-                sleep 1
-            else
-                log "ERROR: setcap failed, can not continue"
-                log "ERROR: You may either launch with -e BIND_PRIV=false and only use ports >1024"
-                log "ERROR: or run this container as root with -e RUNAS_UID0=true"
-                exit 1
-            fi
-        fi
-        exec gosu unifi:unifi ${UNIFI_CMD}
-    fi
+    exec ${UNIFI_CMD}
 else
     log "Executing: ${@}"
     exec ${@}
