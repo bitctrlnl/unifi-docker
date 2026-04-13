@@ -24,9 +24,11 @@ ENV BASEDIR=/usr/lib/unifi \
 
 RUN set -eux; \
     apt-get update; \
+    apt-get upgrade -y; \
     apt-get install -y --no-install-recommends ca-certificates procps; \
+    apt-get clean; \
     rm -rf /var/lib/apt/lists/*
-
+    
 RUN mkdir -p /usr/unifi \
     /usr/local/unifi/init.d \
     /usr/unifi/init.d \
