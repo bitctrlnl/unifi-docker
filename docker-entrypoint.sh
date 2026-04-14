@@ -30,8 +30,6 @@ trap 'kill ${!}; exit_handler' SIGHUP SIGINT SIGQUIT SIGTERM
 
 [ "x${JAVA_HOME}" != "x" ] || set_java_home
 
-
-# vars similar to those found in unifi.init
 MONGOPORT=27117
 
 CODEPATH=${BASEDIR}
@@ -42,12 +40,6 @@ RUNLINK=${BASEDIR}/run
 DIRS="${RUNDIR} ${LOGDIR} ${DATADIR} ${BASEDIR}"
 
 JVM_MAX_HEAP_SIZE=${JVM_MAX_HEAP_SIZE:-1024M}
-#JVM_INIT_HEAP_SIZE=
-
-#JAVA_ENTROPY_GATHER_DEVICE=
-#UNIFI_JVM_EXTRA_OPTS=
-#ENABLE_UNIFI=yes
-
 
 MONGOLOCK="${DATAPATH}/db/mongod.lock"
 JVM_EXTRA_OPTS="${JVM_EXTRA_OPTS} --add-opens=java.base/java.time=ALL-UNNAMED -Dunifi.datadir=${DATADIR} -Dunifi.logdir=${LOGDIR} -Dunifi.rundir=${RUNDIR}"
@@ -65,12 +57,10 @@ if [ ! -z "${JVM_MAX_THREAD_STACK_SIZE}" ]; then
   JVM_EXTRA_OPTS="${JVM_EXTRA_OPTS} -Xss${JVM_MAX_THREAD_STACK_SIZE}"
 fi
 
-
 JVM_OPTS="${JVM_EXTRA_OPTS}
   -Djava.awt.headless=true
   -Dfile.encoding=UTF-8"
 
-# Cleaning /var/run/unifi/* See issue #26, Docker takes care of exlusivity in the container anyway.
 rm -f /var/run/unifi/unifi.pid
 
 run-parts /usr/local/unifi/init.d
@@ -80,7 +70,6 @@ if [ -d "/unifi/init.d" ]; then
     run-parts "/unifi/init.d"
 fi
 
-# Used to generate simple key/value pairs, for example system.properties
 confSet () {
   file=$1
   key=$2
@@ -117,12 +106,10 @@ if ! [[ -z "$LOTSOFDEVICES" ]]; then
   settings["unifi.G1GC.enabled"]="true"
   settings["unifi.xms"]="$(h2mb $JVM_INIT_HEAP_SIZE)"
   settings["unifi.xmx"]="$(h2mb ${JVM_MAX_HEAP_SIZE:-1024M})"
-  # Reduce MongoDB I/O (issue #300)
   settings["unifi.db.nojournal"]="true"
   settings["unifi.db.extraargs"]="--quiet"
 fi
 
-# Implements issue #30
 if ! [[ -z "$DB_URI" || -z "$STATDB_URI" || -z "$DB_NAME" ]]; then
   settings["db.mongo.local"]="false"
   settings["db.mongo.uri"]="$DB_URI"
@@ -163,30 +150,44 @@ if [[ "$UNIFI_STDOUT" == "true" ]]; then
   settings["unifi.logStdout"]="true"
 fi
 
-UNIFI_CMD="java ${JVM_OPTS} -jar ${BASEDIR}/lib/ace.jar start"
-
-# controller writes to relative path logs/server.log
 cd ${BASEDIR}
 
-CUID=$(id -u)
-
-if [[ "${@}" == "unifi" ]]; then
-    # keep attached to shell so we can wait on it
+if [[ "$1" == "unifi" ]]; then
     log 'Starting unifi controller service.'
+
+    # --- FAIL FAST CHECK FOR BIND MOUNT PERMISSIONS ---
     for dir in "${DATADIR}" "${LOGDIR}"; do
         if [ ! -d "${dir}" ]; then
             if [ "${UNSAFE_IO}" == "true" ]; then
                 rm -rf "${dir}"
             fi
-            mkdir -p "${dir}"
+            if ! mkdir -p "${dir}"; then
+                log "ERROR: Cannot create ${dir}"
+                log "ERROR: The /unifi bind mount is not writable by uid $(id -u) gid $(id -g)"
+                log "ERROR: Fix on host with:"
+                log "ERROR:   chown -R $(id -u):$(id -g) <your-unifi-data-dir>"
+                exit 1
+            fi
         fi
+
+        if ! touch "${dir}/.write-test" 2>/dev/null; then
+            log "ERROR: ${dir} is not writable by uid $(id -u) gid $(id -g)"
+            log "ERROR: UniFi cannot write system.properties or logs"
+            exit 1
+        fi
+
+        rm -f "${dir}/.write-test"
     done
+    # --- END FAIL FAST CHECK ---
+
     for key in "${!settings[@]}"; do
       confSet "$confFile" "$key" "${settings[$key]}"
     done
-    exec ${UNIFI_CMD}
+
+    exec java ${JVM_OPTS} -jar ${BASEDIR}/lib/ace.jar start
 else
-    log "Executing: ${@}"
-    exec ${@}
+    log "Executing: $@"
+    exec "$@"
 fi
+
 exit 1
