@@ -202,7 +202,9 @@ Example:
 Always pin to a specific version:
 
 ```yaml
-image: bitctrlnl/unifi:10.2.105
+image: bitctrlnl/unifi:10.2.105.10
+```
+
 ## License
 
 MIT
