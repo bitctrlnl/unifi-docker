@@ -70,8 +70,34 @@ Edit:
 Replace all placeholder passwords with secure values.
 
 ---
+### 4. Make folders for bind mounts and change FS permissions
 
-### 4. Start the stack
+This image runs as the non-root `unifi` user (uid/gid 999).
+When using a bind mount like `./unifi-data:/unifi`, the mounted host directory must be writable by uid/gid 999.
+If not, UniFi may fail to create `/unifi/data` and `/unifi/log`, and remain stuck during startup.
+
+Run: 
+
+```
+mkdir -p unifi-data
+sudo chown -R 999:999 unifi-data
+sudo chmod 755 unifi-data
+```
+
+The container runs as non root, so it has to have a place thats writable.
+
+If you get errors during the startup of the container, the'll look like the following:
+```
+mkdir: cannot create directory '/unifi/data': Permission denied
+mkdir: cannot create directory '/unifi/log': Permission denied
+/usr/local/bin/docker-entrypoint.sh: line 93: /unifi/data/system.properties: No such file or directory
+WARN Unable to load properties from '/usr/lib/unifi/data/system.properties' - /usr/lib/unifi/data/system.properties (No such file or directory)
+Failed to create parent directories for [/usr/lib/unifi/logs/server.log]
+openFile(logs/server.log,true) call failed. java.io.FileNotFoundException: logs/server.log (No such file or directory)
+```
+
+
+### 5. Start the stack
 
 ```bash
 docker compose up -d
@@ -79,7 +105,7 @@ docker compose up -d
 
 ---
 
-### 5. Open UniFi
+### 6. Open UniFi
 
 ```text
 https://<host>:8443
