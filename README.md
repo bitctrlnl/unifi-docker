@@ -26,7 +26,7 @@ Image tags follow this pattern:
 Example:
 
 ```bash
-bitctrlnl/unifi:10.2.105.5
+bitctrlnl/unifi:10.2.105.10
 ```
 
 ---
