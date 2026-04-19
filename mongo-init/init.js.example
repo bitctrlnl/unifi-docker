@@ -4,8 +4,8 @@ db.createUser({
   user: "unifi",
   pwd: "changeme-app-password",
   roles: [
-    { role: "readWrite", db: "unifi" },
-    { role: "readWrite", db: "unifi_stat" },
-    { role: "readWrite", db: "unifi_audit" }
+    { role: "dbOwner", db: "unifi" },
+    { role: "dbOwner", db: "unifi_stat" },
+    { role: "dbOwner", db: "unifi_audit" }
   ]
 });
