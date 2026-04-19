@@ -23,9 +23,9 @@ services:
     depends_on:
       - unifi-mongo
     environment:
-      DB_URI: mongodb://${MONGO_APP_USERNAME}:${MONGO_APP_PASSWORD}@unifi-mongo:27017/unifi
-      STATDB_URI: mongodb://${MONGO_APP_USERNAME}:${MONGO_APP_PASSWORD}@unifi-mongo:27017/unifi_stat
-      DB_NAME: unifi
+      DB_URI: mongodb://${MONGO_APP_USERNAME}:${MONGO_APP_PASSWORD}@unifi-mongo:27017/${MONGO_DBNAME}?authSource=${MONGO_DBNAME}
+      STATDB_URI: mongodb://${MONGO_APP_USERNAME}:${MONGO_APP_PASSWORD}@unifi-mongo:27017/${MONGO_DBNAME}_stat?authSource=${MONGO_DBNAME}
+      DB_NAME: ${MONGO_DBNAME:-unifi}
     ports:
       - "8443:8443"
       - "8080:8080"
