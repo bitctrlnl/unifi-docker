@@ -41,7 +41,7 @@ bitctrlnl/unifi:10.2.105.10
 ------------------------------------------------------------------------
 
 ## Quick start
-either:
+Either:
 ### 1. Clone the repository
 
 ``` bash
@@ -49,7 +49,7 @@ git clone https://github.com/bitctrlnl/unifi-docker.git
 cd unifi-docker
 ```
 
-or:
+Or:
 ### 1. Copy the following files:
 
 1. docker-compose.example.yaml
