@@ -74,13 +74,14 @@ Replace all placeholder passwords with secure values.
 
 Ensure the MongoDB init script is present:
 
-``` bash
-mkdir -p mongo-init
+```
+ls mongo-init
 ```
 
 This repository includes:
 
     mongo-init/01-init-unifi-db.sh
+
 
 This script will automatically:
 
@@ -90,6 +91,7 @@ This script will automatically:
     -   `${MONGO_DBNAME}`
     -   `${MONGO_DBNAME}_stat`
     -   `${MONGO_DBNAME}_audit`
+    -   `${MONGO_DBNAME}_restore`
 
 ⚠️ Note:
 
@@ -154,7 +156,6 @@ docker compose up -d
 -   Change all passwords before use
 -   Do not expose MongoDB to the internet
 -   Keep `.env` private
--   Keep `mongo-init/01-init-unifi-db.sh` private
 -   Use a reverse proxy and HTTPS if exposing UniFi externally
 -   Back up UniFi and MongoDB data regularly
 
