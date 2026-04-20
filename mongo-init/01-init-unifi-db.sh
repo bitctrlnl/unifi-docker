@@ -29,11 +29,11 @@ if (existingUser) {
     user: "${MONGO_APP_USERNAME}",
     pwd: "${MONGO_APP_PASSWORD}",
     roles: [
-  { db: "${MONGO_DBNAME}", role: "dbOwner" },
-  { db: "${MONGO_DBNAME}_stat", role: "dbOwner" },
-  { db: "${MONGO_DBNAME}_audit", role: "dbOwner" },
-  { db: "${MONGO_DBNAME}_restore", role: "dbOwner" }
-]
+      { db: "${MONGO_DBNAME}", role: "dbOwner" },
+      { db: "${MONGO_DBNAME}_stat", role: "dbOwner" },
+      { db: "${MONGO_DBNAME}_audit", role: "dbOwner" },
+      { db: "${MONGO_DBNAME}_restore", role: "dbOwner" }
+    ]
   })
   print("Mongo user '${MONGO_APP_USERNAME}' created")
 }
