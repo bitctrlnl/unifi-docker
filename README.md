@@ -41,13 +41,20 @@ bitctrlnl/unifi:10.2.105.10
 ------------------------------------------------------------------------
 
 ## Quick start
-
+either:
 ### 1. Clone the repository
 
 ``` bash
 git clone https://github.com/bitctrlnl/unifi-docker.git
 cd unifi-docker
 ```
+
+or:
+### 1. Copy the following files:
+
+1. docker-compose.example.yaml
+2. .env.example
+3. mongo-init/01-init-unifi-db.sh
 
 ------------------------------------------------------------------------
 
