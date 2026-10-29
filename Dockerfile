@@ -3,7 +3,7 @@ FROM debian:trixie-slim
 LABEL maintainer="bitctrlnl"
 
 ARG DEBIAN_FRONTEND=noninteractive
-ARG UNIFI_VERSION=10.5.67
+ARG UNIFI_VERSION=10.6.101
 ARG UNIFI_ZIP_URL=https://dl.ui.com/unifi/${UNIFI_VERSION}/UniFi.unix.zip
 
 ENV BASEDIR=/usr/lib/unifi \
